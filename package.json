@@ -4,7 +4,8 @@
   "description": "A rollup plugin to remove files and folders.",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -20,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/open-tech-world/rollup-plugin-clean/issues"
   },
-  "homepage": "https://github.com/open-tech-world/rollup-plugin-clean#readme"
+  "homepage": "https://github.com/open-tech-world/rollup-plugin-clean#readme",
+  "devDependencies": {
+    "typescript": "^4.3.2"
+  }
 }
