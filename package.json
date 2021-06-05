@@ -1,0 +1,24 @@
+{
+  "name": "@open-tech-world/rollup-plugin-clean",
+  "version": "0.1.0",
+  "description": "A rollup plugin to remove files and folders.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/open-tech-world/rollup-plugin-clean.git"
+  },
+  "keywords": [
+    "rollup",
+    "plugin",
+    "clean"
+  ],
+  "author": "Thanga Ganapathy <ganapathy888@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/open-tech-world/rollup-plugin-clean/issues"
+  },
+  "homepage": "https://github.com/open-tech-world/rollup-plugin-clean#readme"
+}
