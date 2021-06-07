@@ -2,11 +2,11 @@ export default {
   input: 'built/index.js',
   output: [
     {
-      file: 'dist/index.cjs.js',
+      file: 'dist/plugin.cjs.js',
       format: 'cjs',
     },
     {
-      file: 'dist/index.es.js',
+      file: 'dist/plugin.es.js',
       format: 'es',
     },
   ],
