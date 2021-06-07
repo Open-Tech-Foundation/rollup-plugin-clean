@@ -5,6 +5,7 @@ import { hasMagic } from 'globby';
 import { statSync } from 'fs';
 
 import { InputOptionsType, IinputObject, TargeType } from './InputOptionsType';
+import { hasProp, isPlainObject } from './utils';
 
 function removeCWDFromPath(path: string): string {
   return path.replace(process.cwd(), '');
@@ -61,14 +62,6 @@ async function cleanTargets(this: PluginContext, target: TargeType) {
   }
 
   this.warn({ message: 'Nothing to clean!' });
-}
-
-function isPlainObject(obj: unknown): boolean {
-  return typeof obj === 'object' && obj?.constructor === Object;
-}
-
-function hasProp(obj: unknown, prop: string): boolean {
-  return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
 function isValidOptionObj(obj: IinputObject): boolean {
