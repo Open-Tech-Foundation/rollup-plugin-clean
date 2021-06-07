@@ -151,4 +151,14 @@ describe('Clean', () => {
     expect(warnSpy).not.toHaveBeenCalled();
     expect(errorSpy).not.toHaveBeenCalled();
   });
+
+  it('removes folders from start hook target array', async () => {
+    const dir1 = '__tests__/dist';
+    const dir2 = '__tests__/dist2';
+    await ensureDir(dir1);
+    await ensureDir(dir2);
+    await build({ start: [dir1, dir2] });
+    expect(warnSpy).not.toHaveBeenCalled();
+    expect(errorSpy).not.toHaveBeenCalled();
+  });
 });
