@@ -1,6 +1,6 @@
 {
   "name": "@open-tech-world/rollup-plugin-clean",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A rollup plugin to remove files and folders.",
   "main": "dist/plugin.cjs.js",
   "module": "dist/plugin.es.js",
