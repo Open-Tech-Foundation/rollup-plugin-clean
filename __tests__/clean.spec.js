@@ -144,7 +144,7 @@ describe('Clean', () => {
     expect(errorSpy).not.toHaveBeenCalled();
   });
 
-  it('removes a folder for start hook target object', async () => {
+  it('removes a folder for start hook target string', async () => {
     const dir = '__tests__/dist';
     await ensureDir(dir);
     await build({ start: dir });
@@ -158,6 +158,14 @@ describe('Clean', () => {
     await ensureDir(dir1);
     await ensureDir(dir2);
     await build({ start: [dir1, dir2] });
+    expect(warnSpy).not.toHaveBeenCalled();
+    expect(errorSpy).not.toHaveBeenCalled();
+  });
+
+  it('removes a folder for end hook target string', async () => {
+    const dir = '__tests__/ts_built';
+    await ensureDir(dir);
+    await build({ end: dir });
     expect(warnSpy).not.toHaveBeenCalled();
     expect(errorSpy).not.toHaveBeenCalled();
   });
