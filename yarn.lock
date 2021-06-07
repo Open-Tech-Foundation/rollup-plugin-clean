@@ -1555,14 +1555,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@open-tech-world/rollup-plugin-clean@^0.2.0, @open-tech-world/rollup-plugin-clean@workspace:.":
+"@open-tech-world/rollup-plugin-clean@^0.2.1, @open-tech-world/rollup-plugin-clean@workspace:.":
   version: 0.0.0-use.local
   resolution: "@open-tech-world/rollup-plugin-clean@workspace:."
   dependencies:
     "@babel/core": ^7.14.3
     "@babel/preset-env": ^7.14.4
     "@babel/preset-typescript": ^7.13.0
-    "@open-tech-world/rollup-plugin-clean": ^0.2.0
+    "@open-tech-world/rollup-plugin-clean": ^0.2.1
     "@types/globby": ^9.1.0
     "@types/node": ^15.12.1
     "@typescript-eslint/eslint-plugin": latest
