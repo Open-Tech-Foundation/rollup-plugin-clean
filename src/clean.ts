@@ -33,7 +33,7 @@ function isValidPath(target: string) {
 
 async function cleanStrTarget(this: PluginContext, target: string) {
   if (!isValidPath(target)) {
-    this.warn({ message: `Target path "${target}" not found` });
+    this.warn({ message: `Target path "${target}" is not found` });
   }
   await del(target);
 }
@@ -42,7 +42,7 @@ async function cleanArrTargets(this: PluginContext, target: string[]) {
   const unknownPaths = target.filter((path) => !isValidPath(path));
   if (unknownPaths.length > 0) {
     this.warn({
-      message: `The following target paths not found: \n\n${formatUnknownPaths(
+      message: `The following target paths are not found: \n\n${formatUnknownPaths(
         unknownPaths
       )}`,
     });
