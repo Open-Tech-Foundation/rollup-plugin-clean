@@ -40,6 +40,8 @@ async function deleteTarget(target: TargeType): Promise<void> {
     await del(joinCWDToTarget(target));
   } else {
     const deleteTargets = target.map(joinCWDToTarget);
+    console.log('deleteTargets', deleteTargets);
+    console.log('Dry: ', await del(deleteTargets, { dryRun: true }));
     await del(deleteTargets);
   }
 }

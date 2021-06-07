@@ -117,6 +117,13 @@ describe('Clean', () => {
     expect(errorSpy).not.toHaveBeenCalled();
   });
 
+  it('warns for invalid path and removes a folder', async () => {
+    await ensureDir('dist');
+    await build(['dist', 'dist2']);
+    expect(warnSpy).toHaveBeenCalled();
+    expect(errorSpy).not.toHaveBeenCalled();
+  });
+
   it('removes images subfolder files but not logo.png file', async () => {
     const dir = '__tests__/dist';
     await ensureDir(dir);
