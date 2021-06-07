@@ -11,7 +11,7 @@
     "test": "jest",
     "build:ts": "tsc",
     "build:rollup": "rollup -c",
-    "build": "yarn build:ts && build:rollup"
+    "build": "yarn build:ts && yarn build:rollup"
   },
   "repository": {
     "type": "git",
@@ -32,9 +32,8 @@
     "@babel/core": "^7.14.3",
     "@babel/preset-env": "^7.14.4",
     "@babel/preset-typescript": "^7.13.0",
-    "@open-tech-world/rollup-plugin-clean": "^0.1.0",
+    "@open-tech-world/rollup-plugin-clean": "^0.2.0",
     "@types/globby": "^9.1.0",
-    "@types/lodash.difference": "^4.5.6",
     "@types/node": "^15.12.1",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
@@ -50,7 +49,6 @@
   },
   "dependencies": {
     "del": "^6.0.0",
-    "globby": "^11.0.3",
-    "lodash.difference": "^4.5.0"
+    "globby": "^11.0.3"
   }
 }

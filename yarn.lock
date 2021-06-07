@@ -1555,16 +1555,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@open-tech-world/rollup-plugin-clean@^0.1.0, @open-tech-world/rollup-plugin-clean@workspace:.":
+"@open-tech-world/rollup-plugin-clean@^0.2.0, @open-tech-world/rollup-plugin-clean@workspace:.":
   version: 0.0.0-use.local
   resolution: "@open-tech-world/rollup-plugin-clean@workspace:."
   dependencies:
     "@babel/core": ^7.14.3
     "@babel/preset-env": ^7.14.4
     "@babel/preset-typescript": ^7.13.0
-    "@open-tech-world/rollup-plugin-clean": ^0.1.0
+    "@open-tech-world/rollup-plugin-clean": ^0.2.0
     "@types/globby": ^9.1.0
-    "@types/lodash.difference": ^4.5.6
     "@types/node": ^15.12.1
     "@typescript-eslint/eslint-plugin": latest
     "@typescript-eslint/parser": latest
@@ -1576,7 +1575,6 @@ __metadata:
     fs-extra: ^10.0.0
     globby: ^11.0.3
     jest: ^27.0.4
-    lodash.difference: ^4.5.0
     prettier: ^2.3.1
     rollup: ^2.50.6
     typescript: ^4.3.2
@@ -1696,22 +1694,6 @@ __metadata:
   version: 7.0.7
   resolution: "@types/json-schema@npm:7.0.7"
   checksum: b9d2c509fa4e0b82f58e73f5e6ab76c60ff1884ba41bb82f37fb1cece226d4a3e5a62fedf78a43da0005373a6713d9abe61c1e592906402c41c08ad6ab26d52b
-  languageName: node
-  linkType: hard
-
-"@types/lodash.difference@npm:^4.5.6":
-  version: 4.5.6
-  resolution: "@types/lodash.difference@npm:4.5.6"
-  dependencies:
-    "@types/lodash": "*"
-  checksum: d2c52bc2dcb8772c65c72e3194eef8c329820f83abf7e354e3bd29a110c3e828eeac99e892533fad10c8b30c2c637353997d9a74e7ccf19be9bd63b9428c2333
-  languageName: node
-  linkType: hard
-
-"@types/lodash@npm:*":
-  version: 4.14.170
-  resolution: "@types/lodash@npm:4.14.170"
-  checksum: 5ecc968649e764e3204435ba5125a3645e5e83963069a26b9307791698bf47ed9c2bd0f97488d9537eb4753d4bae596e5fa6187437a5b04bf47aba78fa553d50
   languageName: node
   linkType: hard
 
@@ -4347,13 +4329,6 @@ __metadata:
   version: 4.0.8
   resolution: "lodash.debounce@npm:4.0.8"
   checksum: b6042bd8c09ff1961c9127d32266316bc21f946ece5e3464a663ec61fadb98e7d56ec0ef7e23b47d393695310c19cf24e651c1756be6da91ac02c72be7f79465
-  languageName: node
-  linkType: hard
-
-"lodash.difference@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "lodash.difference@npm:4.5.0"
-  checksum: 7a2c297cf5fb6cf6899825e620cb017694a1891b3b35e11aa7ddc503128222a84d851937c36584a9e690344ccaf84116f137d04fdd8949ee90918edd4637d3b6
   languageName: node
   linkType: hard
 
