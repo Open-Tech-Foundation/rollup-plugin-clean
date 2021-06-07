@@ -31,11 +31,24 @@ function isValidPath(target: string) {
   return true;
 }
 
+function joinCWDToTarget(target: string) {
+  return Path.join(process.cwd(), target);
+}
+
+async function deleteTarget(target: TargeType): Promise<void> {
+  if (typeof target === 'string') {
+    await del(joinCWDToTarget(target));
+  } else {
+    const deleteTargets = target.map(joinCWDToTarget);
+    await del(deleteTargets);
+  }
+}
+
 async function cleanStrTarget(this: PluginContext, target: string) {
   if (!isValidPath(target)) {
     this.warn({ message: `Target path "${target}" is not found` });
   }
-  await del(target);
+  await deleteTarget(target);
 }
 
 async function cleanArrTargets(this: PluginContext, target: string[]) {
@@ -47,7 +60,7 @@ async function cleanArrTargets(this: PluginContext, target: string[]) {
       )}`,
     });
   }
-  await del(target);
+  await deleteTarget(target);
 }
 
 async function cleanTargets(this: PluginContext, target: TargeType) {
@@ -70,6 +83,7 @@ function isValidOptionObj(obj: IinputObject): boolean {
 }
 
 export default function clean(options: InputOptionsType): Plugin {
+  console.log('From Clean Plugin: CWD ', process.cwd());
   return {
     name: '@open-tech-world/rollup-plugin-clean',
     async buildStart() {
