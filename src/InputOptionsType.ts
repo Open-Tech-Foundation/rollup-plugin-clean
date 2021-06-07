@@ -1,10 +1,8 @@
-type TargeType = string | string[];
+export type TargeType = string | string[];
 
-interface IinputObject {
+export interface IinputObject {
   start: TargeType;
   end: TargeType;
 }
 
-type InputOptionsType = TargeType | IinputObject;
-
-export default InputOptionsType;
+export type InputOptionsType = TargeType | IinputObject;

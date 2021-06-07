@@ -1562,6 +1562,7 @@ __metadata:
     "@babel/core": ^7.14.3
     "@babel/preset-env": ^7.14.4
     "@babel/preset-typescript": ^7.13.0
+    "@types/globby": ^9.1.0
     "@types/lodash.difference": ^4.5.6
     "@types/node": ^15.12.1
     "@typescript-eslint/eslint-plugin": latest
@@ -1572,6 +1573,7 @@ __metadata:
     eslint-plugin-jest: ^24.3.6
     eslint-plugin-prettier: ^3.4.0
     fs-extra: ^10.0.0
+    globby: ^11.0.3
     jest: ^27.0.4
     lodash.difference: ^4.5.0
     prettier: ^2.3.1
@@ -1643,6 +1645,15 @@ __metadata:
   dependencies:
     "@babel/types": ^7.3.0
   checksum: 676150e00d1f6b535a3c53f9c22ae4abb3707abdbf71a9ebf200a8722fc0cd9b7c677165c0dea35616fed5af9f93b40aaa58ba56fd21bb2c843cd03c12419afd
+  languageName: node
+  linkType: hard
+
+"@types/globby@npm:^9.1.0":
+  version: 9.1.0
+  resolution: "@types/globby@npm:9.1.0"
+  dependencies:
+    globby: "*"
+  checksum: 9dd2abb72f7fe61a84e322f7d5a25640862ccd776a38f770b58e4a07040d9d8123ddfd2f28672bda6d137b66ec26ac41d9ec739bf41cc85a3e662218609cd363
   languageName: node
   linkType: hard
 
@@ -3269,7 +3280,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globby@npm:^11.0.1, globby@npm:^11.0.3":
+"globby@npm:*, globby@npm:^11.0.1, globby@npm:^11.0.3":
   version: 11.0.3
   resolution: "globby@npm:11.0.3"
   dependencies:
