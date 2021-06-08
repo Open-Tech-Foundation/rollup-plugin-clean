@@ -31,19 +31,8 @@ function isValidPath(target: string) {
   return true;
 }
 
-function joinCWDToTarget(target: string): string {
-  return Path.join(process.cwd(), target);
-}
-
 async function deleteTarget(target: TargeType): Promise<void> {
-  if (typeof target === 'string') {
-    await del(joinCWDToTarget(target));
-  } else {
-    const deleteTargets = target.map(joinCWDToTarget);
-    console.log('deleteTargets', deleteTargets);
-    console.log('Dry: ', await del(deleteTargets, { dryRun: true }));
-    await del(deleteTargets);
-  }
+  await del(target);
 }
 
 async function cleanStrTarget(this: PluginContext, target: string) {
