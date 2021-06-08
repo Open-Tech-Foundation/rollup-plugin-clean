@@ -41,7 +41,7 @@ export default {
 A function to delete files and folders in start or end build hooks.
 
 ```ts
-clean(target: string | string[] | { start: target, end: target }, options: {dryRun: boolean})
+clean(target: string | string[] | { start: target, end: target }, options: { dryRun: boolean })
 ```
 
 Props:
@@ -55,7 +55,7 @@ Options:
 
 | Option | Type | Default | Description |
 | ------ | ---- | ------- | ----------- |
-| dryRun | Boolean | false | Flag to disable clean function and it reports paths to be cleaned in the console.
+| dryRun | Boolean | false | Flag to disable clean function and it reports the target paths to be cleaned in the console.
 
 #### License
 
