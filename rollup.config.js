@@ -1,5 +1,3 @@
-import clean from '@open-tech-world/rollup-plugin-clean';
-
 export default {
   input: 'built/index.js',
   output: [
@@ -12,6 +10,5 @@ export default {
       format: 'es',
     },
   ],
-  plugins: [clean(['dist', 'dist2'])],
   external: ['del', 'path', 'globby', 'fs'],
 };
