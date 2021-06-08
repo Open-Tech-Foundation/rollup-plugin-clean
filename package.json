@@ -12,8 +12,7 @@
     "test": "jest",
     "build:ts": "tsc",
     "build:rollup": "rollup -c",
-    "build": "yarn build:ts && yarn build:rollup",
-    "publish": "npm publish"
+    "build": "yarn build:ts && yarn build:rollup"
   },
   "repository": {
     "type": "git",
