@@ -31,7 +31,7 @@ function isValidPath(target: string) {
   return true;
 }
 
-function joinCWDToTarget(target: string) {
+function joinCWDToTarget(target: string): string {
   return Path.join(process.cwd(), target);
 }
 
@@ -67,12 +67,12 @@ async function cleanArrTargets(this: PluginContext, target: string[]) {
 
 async function cleanTargets(this: PluginContext, target: TargeType) {
   if (typeof target === 'string' && target.length > 0) {
-    cleanStrTarget.call(this, target);
+    await cleanStrTarget.call(this, target);
     return;
   }
 
   if (typeof target === 'object' && Array.isArray(target)) {
-    cleanArrTargets.call(this, target);
+    await cleanArrTargets.call(this, target);
     return;
   }
 
