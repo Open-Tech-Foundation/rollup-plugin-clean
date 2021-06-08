@@ -41,7 +41,7 @@ export default {
 A function to delete files and folders in start or end build hooks.
 
 ```ts
-clean(target: string | string[] | { start: target, end: target }, options: { dryRun: boolean })
+clean(target: string | string[] | { start: target, end: target }, options: { dryRun: boolean, silent: boolean })
 ```
 
 Props:
