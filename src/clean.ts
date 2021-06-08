@@ -5,7 +5,7 @@ import { hasMagic } from 'globby';
 import { statSync } from 'fs';
 
 import { ITarget, TargetStringType, TargetType } from './TargetType';
-import { hasProp, isPlainObject } from './utils';
+import { hasProp, isArray, isPlainObject } from './utils';
 
 function removeCWDFromPath(path: string): string {
   return path.replace(process.cwd(), '');
@@ -61,8 +61,8 @@ async function cleanTargets(this: PluginContext, target: TargetStringType) {
     return;
   }
 
-  if (typeof target === 'object' && Array.isArray(target)) {
-    await cleanArrTargets.call(this, target);
+  if (isArray(target)) {
+    await cleanArrTargets.call(this, target as string[]);
     return;
   }
 
