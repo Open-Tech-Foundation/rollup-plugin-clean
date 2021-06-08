@@ -4,7 +4,7 @@ import Path from 'path';
 import { hasMagic } from 'globby';
 import { statSync } from 'fs';
 
-import { InputOptionsType, IinputObject, TargeType } from './InputOptionsType';
+import { ITarget, TargetStringType, TargetType } from './TargetType';
 import { hasProp, isPlainObject } from './utils';
 
 function removeCWDFromPath(path: string): string {
@@ -31,7 +31,7 @@ function isValidPath(target: string) {
   return true;
 }
 
-async function deleteTarget(target: TargeType): Promise<void> {
+async function deleteTarget(target: TargetStringType): Promise<void> {
   await del(target);
 }
 
@@ -54,7 +54,8 @@ async function cleanArrTargets(this: PluginContext, target: string[]) {
   await deleteTarget(target);
 }
 
-async function cleanTargets(this: PluginContext, target: TargeType) {
+// Todo use isArray util
+async function cleanTargets(this: PluginContext, target: TargetStringType) {
   if (typeof target === 'string' && target.length > 0) {
     await cleanStrTarget.call(this, target);
     return;
@@ -68,47 +69,46 @@ async function cleanTargets(this: PluginContext, target: TargeType) {
   this.warn({ message: 'Nothing to clean!' });
 }
 
-function isValidOptionObj(obj: IinputObject): boolean {
+function isValidTargetObj(obj: ITarget): boolean {
   if (Object.keys(obj).length === 0) return false;
   return Object.keys(obj).some((key) => ['start', 'end'].includes(key));
 }
 
-export default function clean(options: InputOptionsType): Plugin {
-  console.log('From Clean Plugin: CWD ', process.cwd());
+export default function clean(target: TargetType): Plugin {
   return {
     name: '@open-tech-world/rollup-plugin-clean',
     async buildStart() {
-      if (isPlainObject(options)) {
-        if (!isValidOptionObj(options as IinputObject)) {
+      if (isPlainObject(target)) {
+        if (!isValidTargetObj(target as ITarget)) {
           this.warn({
             message:
               'Invalid object passed!, the object must contain "start" or "end" prop',
           });
           return;
         }
-        if (hasProp(options, 'start')) {
+        if (hasProp(target, 'start')) {
           await cleanTargets.call(
             this,
-            (options as IinputObject).start as TargeType
+            (target as ITarget).start as TargetStringType
           );
         }
       } else {
-        await cleanTargets.call(this, options as TargeType);
+        await cleanTargets.call(this, target as TargetStringType);
       }
     },
     async buildEnd() {
-      if (isPlainObject(options)) {
-        if (!isValidOptionObj(options as IinputObject)) {
+      if (isPlainObject(target)) {
+        if (!isValidTargetObj(target as ITarget)) {
           this.warn({
             message:
               'Invalid object passed!, the object must contain "start" or "end" prop',
           });
           return;
         }
-        if (hasProp(options, 'end')) {
+        if (hasProp(target, 'end')) {
           await cleanTargets.call(
             this,
-            (options as IinputObject).end as TargeType
+            (target as ITarget).end as TargetStringType
           );
         }
       }
