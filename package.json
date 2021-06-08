@@ -48,5 +48,8 @@
   "dependencies": {
     "del": "^6.0.0",
     "globby": "^11.0.3"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
