@@ -6,6 +6,7 @@ import { statSync } from 'fs';
 
 import { ITarget, TargetStringType, TargetType } from './TargetType';
 import { hasProp, isArray, isPlainObject } from './utils';
+import { IOptions } from './IOptions';
 
 function removeCWDFromPath(path: string): string {
   return path.replace(process.cwd(), '');
@@ -54,8 +55,32 @@ async function cleanArrTargets(this: PluginContext, target: string[]) {
   await deleteTarget(target);
 }
 
-// Todo use isArray util
-async function cleanTargets(this: PluginContext, target: TargetStringType) {
+async function dryRun(
+  this: PluginContext,
+  target: TargetStringType
+): Promise<void> {
+  this.warn({ message: `Running in dry mode` });
+  const dryPaths = await del(target, { dryRun: true });
+  if (dryPaths.length === 0) {
+    this.warn({ message: 'No paths matched!' });
+    return;
+  }
+  console.log('The follwoing relative paths can be cleaned:');
+  dryPaths.forEach((path, index) =>
+    console.log(`${index + 1}. ${removeCWDFromPath(path)}`)
+  );
+}
+
+async function cleanTargets(
+  this: PluginContext,
+  target: TargetStringType,
+  options: IOptions
+) {
+  if (options?.dryRun) {
+    await dryRun.call(this, target);
+    return;
+  }
+
   if (typeof target === 'string' && target.length > 0) {
     await cleanStrTarget.call(this, target);
     return;
@@ -74,7 +99,7 @@ function isValidTargetObj(obj: ITarget): boolean {
   return Object.keys(obj).some((key) => ['start', 'end'].includes(key));
 }
 
-export default function clean(target: TargetType): Plugin {
+export default function clean(target: TargetType, options: IOptions): Plugin {
   return {
     name: '@open-tech-world/rollup-plugin-clean',
     async buildStart() {
@@ -86,14 +111,16 @@ export default function clean(target: TargetType): Plugin {
           });
           return;
         }
+
         if (hasProp(target, 'start')) {
           await cleanTargets.call(
             this,
-            (target as ITarget).start as TargetStringType
+            (target as ITarget).start as TargetStringType,
+            options
           );
         }
       } else {
-        await cleanTargets.call(this, target as TargetStringType);
+        await cleanTargets.call(this, target as TargetStringType, options);
       }
     },
     async buildEnd() {
@@ -105,10 +132,12 @@ export default function clean(target: TargetType): Plugin {
           });
           return;
         }
+
         if (hasProp(target, 'end')) {
           await cleanTargets.call(
             this,
-            (target as ITarget).end as TargetStringType
+            (target as ITarget).end as TargetStringType,
+            options
           );
         }
       }

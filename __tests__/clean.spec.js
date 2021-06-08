@@ -2,17 +2,19 @@ import { rollup } from 'rollup';
 import { ensureFile, ensureDir } from 'fs-extra';
 import clean from '../src';
 
-async function build(options) {
+async function build(target, options) {
   await rollup({
     input: '__tests__/input.js',
-    plugins: [clean(options)],
+    plugins: [clean(target, options)],
   });
 }
 
+let logSpy;
 let warnSpy;
 let errorSpy;
 
 beforeEach(() => {
+  logSpy = jest.spyOn(console, 'log');
   warnSpy = jest.spyOn(console, 'warn');
   errorSpy = jest.spyOn(console, 'error');
 });
@@ -174,6 +176,25 @@ describe('Clean', () => {
     await ensureDir(dir);
     await build({ end: dir });
     expect(warnSpy).not.toHaveBeenCalled();
+    expect(errorSpy).not.toHaveBeenCalled();
+  });
+
+  it('warns for dry runs a invalid folder path', async () => {
+    const dir = '__tests__/dist';
+    await ensureDir(dir);
+    await build('dist', { dryRun: true });
+    expect(warnSpy).toBeCalledTimes(2);
+    expect(errorSpy).not.toHaveBeenCalled();
+  });
+
+  it('dry runs a folder path', async () => {
+    const dir = '__tests__/dist';
+    await ensureDir(dir);
+    await ensureDir(dir + '/public');
+    await ensureFile(dir + '/public/index.html');
+    await build(dir + '/**', { dryRun: true });
+    expect(warnSpy).toBeCalledTimes(1);
+    expect(logSpy).toHaveBeenCalled();
     expect(errorSpy).not.toHaveBeenCalled();
   });
 });
