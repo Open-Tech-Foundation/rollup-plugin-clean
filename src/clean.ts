@@ -36,39 +36,64 @@ async function deleteTarget(target: TargetStringType): Promise<void> {
   await del(target);
 }
 
-async function cleanStrTarget(this: PluginContext, target: string) {
+async function cleanStrTarget(
+  this: PluginContext,
+  target: string,
+  options: IOptions
+) {
   if (!isValidPath(target)) {
-    this.warn({ message: `Target path "${target}" is not found` });
+    warn.call(this, '`Target path "${target}" is not found`', options);
   }
   await deleteTarget(target);
 }
 
-async function cleanArrTargets(this: PluginContext, target: string[]) {
+async function cleanArrTargets(
+  this: PluginContext,
+  target: string[],
+  options: IOptions
+) {
   const unknownPaths = target.filter((path) => !isValidPath(path));
   if (unknownPaths.length > 0) {
-    this.warn({
-      message: `The following target paths are not found: \n\n${formatUnknownPaths(
+    warn.call(
+      this,
+      `The following target paths are not found: \n\n${formatUnknownPaths(
         unknownPaths
       )}`,
-    });
+      options
+    );
   }
   await deleteTarget(target);
 }
 
 async function dryRun(
   this: PluginContext,
-  target: TargetStringType
+  target: TargetStringType,
+  options: IOptions
 ): Promise<void> {
-  this.warn({ message: `Running in dry mode` });
+  warn.call(this, `Running in dry mode`, options);
   const dryPaths = await del(target, { dryRun: true });
   if (dryPaths.length === 0) {
-    this.warn({ message: 'No paths matched!' });
+    warn.call(this, 'No paths matched!', options);
     return;
   }
-  console.log('The follwoing relative paths can be cleaned:');
+  log.call(this, 'The follwoing relative paths can be cleaned:', options);
   dryPaths.forEach((path, index) =>
-    console.log(`${index + 1}. ${removeCWDFromPath(path)}`)
+    log.call(this, `${index + 1}. ${removeCWDFromPath(path)}`, options)
   );
+}
+
+function warn(this: PluginContext, msg: string, options: IOptions) {
+  if (options?.silent) {
+    return;
+  }
+  this.warn({ message: msg });
+}
+
+function log(this: PluginContext, msg: string, options: IOptions) {
+  if (options?.silent) {
+    return;
+  }
+  console.log(msg);
 }
 
 async function cleanTargets(
@@ -77,21 +102,21 @@ async function cleanTargets(
   options: IOptions
 ) {
   if (options?.dryRun) {
-    await dryRun.call(this, target);
+    await dryRun.call(this, target, options);
     return;
   }
 
   if (typeof target === 'string' && target.length > 0) {
-    await cleanStrTarget.call(this, target);
+    await cleanStrTarget.call(this, target, options);
     return;
   }
 
   if (isArray(target)) {
-    await cleanArrTargets.call(this, target as string[]);
+    await cleanArrTargets.call(this, target as string[], options);
     return;
   }
 
-  this.warn({ message: 'Nothing to clean!' });
+  warn.call(this, 'Nothing to clean!', options);
 }
 
 function isValidTargetObj(obj: ITarget): boolean {
@@ -105,10 +130,11 @@ export default function clean(target: TargetType, options: IOptions): Plugin {
     async buildStart() {
       if (isPlainObject(target)) {
         if (!isValidTargetObj(target as ITarget)) {
-          this.warn({
-            message:
-              'Invalid object passed!, the object must contain "start" or "end" prop',
-          });
+          warn.call(
+            this,
+            'Invalid object passed!, the object must contain "start" or "end" prop',
+            options
+          );
           return;
         }
 
@@ -126,10 +152,11 @@ export default function clean(target: TargetType, options: IOptions): Plugin {
     async buildEnd() {
       if (isPlainObject(target)) {
         if (!isValidTargetObj(target as ITarget)) {
-          this.warn({
-            message:
-              'Invalid object passed!, the object must contain "start" or "end" prop',
-          });
+          warn.call(
+            this,
+            'Invalid object passed!, the object must contain "start" or "end" prop',
+            options
+          );
           return;
         }
 

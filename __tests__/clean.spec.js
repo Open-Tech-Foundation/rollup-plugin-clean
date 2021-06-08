@@ -187,7 +187,7 @@ describe('Clean', () => {
     expect(errorSpy).not.toHaveBeenCalled();
   });
 
-  it('dry runs a folder path', async () => {
+  it('runs in dry mode for a folder path', async () => {
     const dir = '__tests__/dist';
     await ensureDir(dir);
     await ensureDir(dir + '/public');
@@ -195,6 +195,17 @@ describe('Clean', () => {
     await build(dir + '/**', { dryRun: true });
     expect(warnSpy).toBeCalledTimes(1);
     expect(logSpy).toHaveBeenCalled();
+    expect(errorSpy).not.toHaveBeenCalled();
+  });
+
+  it('runs in a silent mode', async () => {
+    const dir = '__tests__/dist';
+    await ensureDir(dir);
+    await ensureDir(dir + '/public');
+    await ensureFile(dir + '/public/index.html');
+    await build(dir + '/**', { silent: true });
+    expect(warnSpy).not.toHaveBeenCalled();
+    expect(logSpy).not.toHaveBeenCalled();
     expect(errorSpy).not.toHaveBeenCalled();
   });
 });
