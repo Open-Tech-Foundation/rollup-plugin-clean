@@ -21,7 +21,14 @@
   "keywords": [
     "rollup",
     "plugin",
-    "clean"
+    "rollup-plugin",
+    "clean",
+    "clear",
+    "delete",
+    "remove",
+    "files",
+    "folders",
+    "directory"
   ],
   "author": "Thanga Ganapathy <ganapathy888@gmail.com>",
   "license": "MIT",
