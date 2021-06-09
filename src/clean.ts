@@ -42,7 +42,7 @@ async function cleanStrTarget(
   options: IOptions
 ) {
   if (!isValidPath(target)) {
-    warn.call(this, '`Target path "${target}" is not found`', options);
+    warn.call(this, `Target path "${target}" is not found`, options);
   }
   await deleteTarget(target);
 }
@@ -76,7 +76,7 @@ async function dryRun(
     warn.call(this, 'No paths matched!', options);
     return;
   }
-  log.call(this, 'The follwoing relative paths can be cleaned:', options);
+  log.call(this, '\nThe follwoing relative paths can be cleaned:', options);
   dryPaths.forEach((path, index) =>
     log.call(this, `${index + 1}. ${removeCWDFromPath(path)}`, options)
   );
@@ -119,25 +119,33 @@ async function cleanTargets(
   warn.call(this, 'Nothing to clean!', options);
 }
 
-function isValidTargetObj(obj: ITarget): boolean {
-  if (Object.keys(obj).length === 0) return false;
-  return Object.keys(obj).some((key) => ['start', 'end'].includes(key));
+function isValidTargetObj(
+  this: PluginContext,
+  obj: ITarget,
+  options: IOptions
+): boolean {
+  if (!isPlainObject(obj)) return false;
+  const isEmpty = Object.keys(obj).length === 0;
+  const hasValidProp = Object.keys(obj).some((key) =>
+    ['start', 'end'].includes(key)
+  );
+  if (isEmpty || !hasValidProp) {
+    warn.call(
+      this,
+      'Invalid object passed!, the object must contain "start" or "end" prop',
+      options
+    );
+
+    return false;
+  }
+  return true;
 }
 
 export default function clean(target: TargetType, options: IOptions): Plugin {
   return {
     name: '@open-tech-world/rollup-plugin-clean',
     async buildStart() {
-      if (isPlainObject(target)) {
-        if (!isValidTargetObj(target as ITarget)) {
-          warn.call(
-            this,
-            'Invalid object passed!, the object must contain "start" or "end" prop',
-            options
-          );
-          return;
-        }
-
+      if (isValidTargetObj.call(this, target as ITarget, options)) {
         if (hasProp(target, 'start')) {
           await cleanTargets.call(
             this,
@@ -145,27 +153,19 @@ export default function clean(target: TargetType, options: IOptions): Plugin {
             options
           );
         }
-      } else {
-        await cleanTargets.call(this, target as TargetStringType, options);
+        return;
       }
+      await cleanTargets.call(this, target as TargetStringType, options);
     },
     async buildEnd() {
-      if (isPlainObject(target)) {
-        if (!isValidTargetObj(target as ITarget)) {
-          warn.call(
-            this,
-            'Invalid object passed!, the object must contain "start" or "end" prop',
-            options
-          );
-          return;
-        }
-
+      if (isValidTargetObj.call(this, target as ITarget, options)) {
         if (hasProp(target, 'end')) {
           await cleanTargets.call(
             this,
             (target as ITarget).end as TargetStringType,
             options
           );
+          return;
         }
       }
     },
