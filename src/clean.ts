@@ -3,6 +3,7 @@ import del from 'del';
 import Path from 'path';
 import { hasMagic } from 'globby';
 import { statSync } from 'fs';
+import merge from 'lodash.merge';
 
 import { ITarget, TargetStringType, TargetType } from './TargetType';
 import { hasProp, isArray, isPlainObject } from './utils';
@@ -32,8 +33,11 @@ function isValidPath(target: string) {
   return true;
 }
 
-async function deleteTarget(target: TargetStringType): Promise<void> {
-  await del(target);
+async function deleteTarget(
+  target: TargetStringType,
+  options: IOptions
+): Promise<void> {
+  await del(target, { dot: options.dot });
 }
 
 async function cleanStrTarget(
@@ -44,7 +48,7 @@ async function cleanStrTarget(
   if (!isValidPath(target)) {
     warn.call(this, `Target path "${target}" is not found`, options);
   }
-  await deleteTarget(target);
+  await deleteTarget(target, options);
 }
 
 async function cleanArrTargets(
@@ -62,7 +66,7 @@ async function cleanArrTargets(
       options
     );
   }
-  await deleteTarget(target);
+  await deleteTarget(target, options);
 }
 
 async function dryRun(
@@ -71,7 +75,10 @@ async function dryRun(
   options: IOptions
 ): Promise<void> {
   warn.call(this, `Running in dry mode`, options);
-  const dryPaths = await del(target, { dryRun: true });
+  const dryPaths = await del(target, {
+    dryRun: options.dryRun,
+    dot: options.dot,
+  });
   if (dryPaths.length === 0) {
     warn.call(this, 'No paths matched!', options);
     return;
@@ -142,6 +149,12 @@ function isValidTargetObj(
 }
 
 export default function clean(target: TargetType, options: IOptions): Plugin {
+  const defaultOptions: IOptions = {
+    dot: true,
+    dryRun: false,
+    silent: false,
+  };
+  merge(defaultOptions, options);
   const doneHooks: string[] = [];
 
   return {
@@ -150,30 +163,30 @@ export default function clean(target: TargetType, options: IOptions): Plugin {
       if (doneHooks.includes('start')) {
         return;
       }
-      if (isValidTargetObj.call(this, target as ITarget, options)) {
+      if (isValidTargetObj.call(this, target as ITarget, defaultOptions)) {
         if (hasProp(target, 'start')) {
           await cleanTargets.call(
             this,
             (target as ITarget).start as TargetStringType,
-            options
+            defaultOptions
           );
         }
         doneHooks.push('start');
         return;
       }
-      await cleanTargets.call(this, target as TargetStringType, options);
+      await cleanTargets.call(this, target as TargetStringType, defaultOptions);
       doneHooks.push('start');
     },
     async buildEnd() {
       if (doneHooks.includes('end')) {
         return;
       }
-      if (isValidTargetObj.call(this, target as ITarget, options)) {
+      if (isValidTargetObj.call(this, target as ITarget, defaultOptions)) {
         if (hasProp(target, 'end')) {
           await cleanTargets.call(
             this,
             (target as ITarget).end as TargetStringType,
-            options
+            defaultOptions
           );
           doneHooks.push('end');
           return;

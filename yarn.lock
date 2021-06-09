@@ -1562,6 +1562,7 @@ __metadata:
     "@babel/core": ^7.14.3
     "@babel/preset-env": ^7.14.4
     "@babel/preset-typescript": ^7.13.0
+    "@types/lodash.merge": ^4.6.6
     "@types/node": ^15.12.1
     "@typescript-eslint/eslint-plugin": latest
     "@typescript-eslint/parser": latest
@@ -1573,6 +1574,7 @@ __metadata:
     fs-extra: ^10.0.0
     globby: ^11.0.3
     jest: ^27.0.4
+    lodash.merge: ^4.6.2
     prettier: ^2.3.1
     rollup: ^2.50.6
     rollup-plugin-dts: ^3.0.2
@@ -1684,6 +1686,22 @@ __metadata:
   version: 7.0.7
   resolution: "@types/json-schema@npm:7.0.7"
   checksum: b9d2c509fa4e0b82f58e73f5e6ab76c60ff1884ba41bb82f37fb1cece226d4a3e5a62fedf78a43da0005373a6713d9abe61c1e592906402c41c08ad6ab26d52b
+  languageName: node
+  linkType: hard
+
+"@types/lodash.merge@npm:^4.6.6":
+  version: 4.6.6
+  resolution: "@types/lodash.merge@npm:4.6.6"
+  dependencies:
+    "@types/lodash": "*"
+  checksum: 63967ce1520f5fee268a1a81b042bc4730e9a11a0ce140634c73fd77f10c18c7d5b9ea79555e6f16d67308d29cfa67ef670b44aadbfc6690b8d7fc080ba369b5
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:*":
+  version: 4.14.170
+  resolution: "@types/lodash@npm:4.14.170"
+  checksum: 5ecc968649e764e3204435ba5125a3645e5e83963069a26b9307791698bf47ed9c2bd0f97488d9537eb4753d4bae596e5fa6187437a5b04bf47aba78fa553d50
   languageName: node
   linkType: hard
 

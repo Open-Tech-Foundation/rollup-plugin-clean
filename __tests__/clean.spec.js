@@ -1,5 +1,5 @@
 import { rollup } from 'rollup';
-import { ensureFile, ensureDir } from 'fs-extra';
+import { ensureFile, ensureDir, pathExists } from 'fs-extra';
 import clean from '../src';
 
 async function build(target, options) {
@@ -204,6 +204,32 @@ describe('Clean', () => {
     await ensureDir(dir + '/public');
     await ensureFile(dir + '/public/index.html');
     await build(dir + '/**', { silent: true });
+    expect(warnSpy).not.toHaveBeenCalled();
+    expect(logSpy).not.toHaveBeenCalled();
+    expect(errorSpy).not.toHaveBeenCalled();
+  });
+
+  it('remove dot files', async () => {
+    const dir = '__tests__/dist';
+    const dotFile = dir + '/.gitignore';
+    await ensureDir(dir);
+    await ensureFile(dotFile);
+    await build(dir + '/*');
+    const exists = await pathExists(dotFile);
+    expect(exists).toBeFalsy();
+    expect(warnSpy).not.toHaveBeenCalled();
+    expect(logSpy).not.toHaveBeenCalled();
+    expect(errorSpy).not.toHaveBeenCalled();
+  });
+
+  it('does not remove dot files', async () => {
+    const dir = '__tests__/dist';
+    const dotFile = dir + '/.gitignore';
+    await ensureDir(dir);
+    await ensureFile(dotFile);
+    await build(dir + '/*', { dot: false });
+    const exists = await pathExists(dotFile);
+    expect(exists).toBeTruthy();
     expect(warnSpy).not.toHaveBeenCalled();
     expect(logSpy).not.toHaveBeenCalled();
     expect(errorSpy).not.toHaveBeenCalled();
