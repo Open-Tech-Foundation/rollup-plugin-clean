@@ -1,3 +1,5 @@
+![npm (scoped)](https://img.shields.io/npm/v/@open-tech-world/rollup-plugin-clean?color=blue)
+
 # @open-tech-world/rollup-plugin-clean
 
 > A rollup plugin to remove files and folders.
