@@ -142,9 +142,14 @@ function isValidTargetObj(
 }
 
 export default function clean(target: TargetType, options: IOptions): Plugin {
+  const doneHooks: string[] = [];
+
   return {
     name: '@open-tech-world/rollup-plugin-clean',
     async buildStart() {
+      if (doneHooks.includes('start')) {
+        return;
+      }
       if (isValidTargetObj.call(this, target as ITarget, options)) {
         if (hasProp(target, 'start')) {
           await cleanTargets.call(
@@ -153,11 +158,16 @@ export default function clean(target: TargetType, options: IOptions): Plugin {
             options
           );
         }
+        doneHooks.push('start');
         return;
       }
       await cleanTargets.call(this, target as TargetStringType, options);
+      doneHooks.push('start');
     },
     async buildEnd() {
+      if (doneHooks.includes('end')) {
+        return;
+      }
       if (isValidTargetObj.call(this, target as ITarget, options)) {
         if (hasProp(target, 'end')) {
           await cleanTargets.call(
@@ -165,6 +175,7 @@ export default function clean(target: TargetType, options: IOptions): Plugin {
             (target as ITarget).end as TargetStringType,
             options
           );
+          doneHooks.push('end');
           return;
         }
       }
