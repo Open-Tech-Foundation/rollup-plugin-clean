@@ -40,7 +40,7 @@ export default {
 
 #### **clean**
 
-A function to delete files and folders in start or end build hooks.
+A function to delete files and folders in rollup build hooks(start or end).
 
 ```ts
 clean(target: string | string[] | { start: target, end: target }, 
