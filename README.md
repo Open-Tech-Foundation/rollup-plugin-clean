@@ -47,14 +47,12 @@ clean(target: string | string[] | { start: target, end: target },
       options: { dryRun: boolean, silent: boolean, dot: boolean })
 ```
 
-Props:
+Parameters:
 
 | Name   | Type                                 | Default   | Description                                                                                                                                                                                                                                                      |
 | ------ | ------------------------------------ | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | target | String \| String[] \| { start, end } | undefined | The target paths to remove. <br> The target string matched using `glob` pattern.<br>The default hook is `start` when string or string array passed. <br> When an object is passed as target, use `start` or `end` prop to specify the target paths to clean. |
 | options | Object | undefined | The options to control the behaviour of clean function.<br>See below table for options properties.|
-
----
 
 Options props: 
 
