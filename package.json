@@ -4,7 +4,8 @@
   "description": "A rollup plugin to remove files and folders.",
   "type": "module",
   "exports": {
-    ".": "./dist/plugin.esm.js"
+    "import": "./dist/plugin.esm.js",
+    "require": "./dist/plugin.cjs.js"
   },
   "types": "./dist/types/index.d.ts",
   "files": [
