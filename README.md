@@ -1,21 +1,21 @@
-![npm (scoped)](https://img.shields.io/npm/v/@open-tech-world/rollup-plugin-clean?color=blue)
-
 # @open-tech-world/rollup-plugin-clean
+
+![npm (scoped)](https://img.shields.io/npm/v/@open-tech-world/rollup-plugin-clean?color=blue)
 
 > A rollup plugin to remove files and folders.
 
 ### Instal
 
-With Yarn:
+Using Yarn
 
 ```sh
 yarn add --dev @open-tech-world/rollup-plugin-clean
 ```
 
-With Npm:
+Using npm
 
 ```sh
-npm i --save-dev @open-tech-world/rollup-plugin-clean
+npm install --save-dev @open-tech-world/rollup-plugin-clean
 ```
 
 ### Usage
@@ -27,8 +27,8 @@ import clean from '@open-tech-world/rollup-plugin-clean';
 export default {
   entry: 'src/index.js',
   output: {
-    file: 'bundle.js',
-    format: 'cjs'
+    file: 'lib/index.js',
+    format: 'esm'
   }
   plugins: [
     clean('build/**') // Removes all files & folders inside the path.
