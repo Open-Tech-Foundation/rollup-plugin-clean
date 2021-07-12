@@ -1,6 +1,9 @@
 import { rollup } from 'rollup';
-import { ensureFile, ensureDir, pathExists } from 'fs-extra';
-import clean from '../src';
+// import { fs.ensureFile, fs.ensureDir, pathExists } from 'fs-extra';
+import { default as fs } from 'fs-extra';
+import { jest } from '@jest/globals';
+
+import clean from '../dist/plugin.esm.js';
 
 async function build(target, options) {
   await rollup({
@@ -46,7 +49,7 @@ describe('Clean', () => {
 
   it('removes a file', async () => {
     const path = './__tests__/dist/bundle.js';
-    await ensureFile(path);
+    await fs.ensureFile(path);
     await build(path);
     expect(warnSpy).not.toHaveBeenCalled();
     expect(errorSpy).not.toHaveBeenCalled();
@@ -54,7 +57,7 @@ describe('Clean', () => {
 
   it('removes a file when glob passed', async () => {
     const path = '__tests__/dist/bundle.js';
-    await ensureFile(path);
+    await fs.ensureFile(path);
     await build('__tests__/dist/*.js');
     expect(warnSpy).not.toHaveBeenCalled();
     expect(errorSpy).not.toHaveBeenCalled();
@@ -63,8 +66,8 @@ describe('Clean', () => {
   it('removes multiple files', async () => {
     const file1 = '__tests__/dist/bundle.js';
     const file2 = '__tests__/dist/vendors.js';
-    await ensureFile(file1);
-    await ensureFile(file2);
+    await fs.ensureFile(file1);
+    await fs.ensureFile(file2);
     await build([file1, file2]);
     expect(warnSpy).not.toHaveBeenCalled();
     expect(errorSpy).not.toHaveBeenCalled();
@@ -73,15 +76,15 @@ describe('Clean', () => {
   it('warns not found paths when mixed of valid and invalid paths passed', async () => {
     const file1 = '__tests__/dist/bundle.js';
     const file2 = '__tests__/dist/vendors.js';
-    await ensureFile(file1);
-    await ensureFile(file2);
+    await fs.ensureFile(file1);
+    await fs.ensureFile(file2);
     await build(['file0', file1, 'file3', file2]);
     expect(warnSpy).toHaveBeenCalled();
     expect(errorSpy).not.toHaveBeenCalled();
   });
 
   it('removes a folder', async () => {
-    await ensureDir('dist');
+    await fs.ensureDir('dist');
     await build('dist');
     expect(warnSpy).not.toHaveBeenCalled();
     expect(errorSpy).not.toHaveBeenCalled();
@@ -89,9 +92,9 @@ describe('Clean', () => {
 
   it('removes a folder with a sub folder', async () => {
     const dir = '__tests__/dist';
-    await ensureDir(dir);
-    await ensureFile(dir + '/file1.js');
-    await ensureDir(dir + '/public');
+    await fs.ensureDir(dir);
+    await fs.ensureFile(dir + '/file1.js');
+    await fs.ensureDir(dir + '/public');
     await build('__tests__/dist');
     expect(warnSpy).not.toHaveBeenCalled();
     expect(errorSpy).not.toHaveBeenCalled();
@@ -99,10 +102,10 @@ describe('Clean', () => {
 
   it('removes a folder with sub folders (multi level)', async () => {
     const dir = '__tests__/dist';
-    await ensureDir(dir);
-    await ensureFile(dir + '/bundle.js');
-    await ensureDir(dir + '/public');
-    await ensureFile(dir + '/public/images/logo.png');
+    await fs.ensureDir(dir);
+    await fs.ensureFile(dir + '/bundle.js');
+    await fs.ensureDir(dir + '/public');
+    await fs.ensureFile(dir + '/public/images/logo.png');
     await build('__tests__/dist');
     expect(warnSpy).not.toHaveBeenCalled();
     expect(errorSpy).not.toHaveBeenCalled();
@@ -110,17 +113,17 @@ describe('Clean', () => {
 
   it('removes a subfolder but not parent', async () => {
     const dir = '__tests__/dist';
-    await ensureDir(dir);
-    await ensureFile(dir + '/bundle.js');
-    await ensureDir(dir + '/public');
-    await ensureFile(dir + '/public/images/logo.png');
+    await fs.ensureDir(dir);
+    await fs.ensureFile(dir + '/bundle.js');
+    await fs.ensureDir(dir + '/public');
+    await fs.ensureFile(dir + '/public/images/logo.png');
     await build('__tests__/dist/public/*');
     expect(warnSpy).not.toHaveBeenCalled();
     expect(errorSpy).not.toHaveBeenCalled();
   });
 
   it('warns for invalid path and removes a folder', async () => {
-    await ensureDir('dist');
+    await fs.ensureDir('dist');
     await build(['dist', 'dist2']);
     expect(warnSpy).toHaveBeenCalled();
     expect(errorSpy).not.toHaveBeenCalled();
@@ -128,11 +131,11 @@ describe('Clean', () => {
 
   it('removes images subfolder files but not logo.png file', async () => {
     const dir = '__tests__/dist';
-    await ensureDir(dir);
-    await ensureFile(dir + '/bundle.js');
-    await ensureDir(dir + '/public');
-    await ensureFile(dir + '/public/images/logo.png');
-    await ensureFile(dir + '/public/images/img1.png');
+    await fs.ensureDir(dir);
+    await fs.ensureFile(dir + '/bundle.js');
+    await fs.ensureDir(dir + '/public');
+    await fs.ensureFile(dir + '/public/images/logo.png');
+    await fs.ensureFile(dir + '/public/images/img1.png');
     await build([
       '__tests__/dist/public/images/*',
       '!__tests__/dist/public/images/logo.png',
@@ -155,7 +158,7 @@ describe('Clean', () => {
 
   it('removes a folder for start hook target string', async () => {
     const dir = '__tests__/dist';
-    await ensureDir(dir);
+    await fs.ensureDir(dir);
     await build({ start: dir });
     expect(warnSpy).not.toHaveBeenCalled();
     expect(errorSpy).not.toHaveBeenCalled();
@@ -164,8 +167,8 @@ describe('Clean', () => {
   it('removes folders from start hook target array', async () => {
     const dir1 = '__tests__/dist';
     const dir2 = '__tests__/dist2';
-    await ensureDir(dir1);
-    await ensureDir(dir2);
+    await fs.ensureDir(dir1);
+    await fs.ensureDir(dir2);
     await build({ start: [dir1, dir2] });
     expect(warnSpy).not.toHaveBeenCalled();
     expect(errorSpy).not.toHaveBeenCalled();
@@ -173,7 +176,7 @@ describe('Clean', () => {
 
   it('removes a folder for end hook target string', async () => {
     const dir = '__tests__/ts_built';
-    await ensureDir(dir);
+    await fs.ensureDir(dir);
     await build({ end: dir });
     expect(warnSpy).not.toHaveBeenCalled();
     expect(errorSpy).not.toHaveBeenCalled();
@@ -181,7 +184,7 @@ describe('Clean', () => {
 
   it('warns for dry runs a invalid folder path', async () => {
     const dir = '__tests__/dist';
-    await ensureDir(dir);
+    await fs.ensureDir(dir);
     await build('dist', { dryRun: true });
     expect(warnSpy).toBeCalledTimes(2);
     expect(errorSpy).not.toHaveBeenCalled();
@@ -189,9 +192,9 @@ describe('Clean', () => {
 
   it('runs in dry mode for a folder path', async () => {
     const dir = '__tests__/dist';
-    await ensureDir(dir);
-    await ensureDir(dir + '/public');
-    await ensureFile(dir + '/public/index.html');
+    await fs.ensureDir(dir);
+    await fs.ensureDir(dir + '/public');
+    await fs.ensureFile(dir + '/public/index.html');
     await build(dir + '/**', { dryRun: true });
     expect(warnSpy).toBeCalledTimes(1);
     expect(logSpy).toHaveBeenCalled();
@@ -200,9 +203,9 @@ describe('Clean', () => {
 
   it('runs in a silent mode', async () => {
     const dir = '__tests__/dist';
-    await ensureDir(dir);
-    await ensureDir(dir + '/public');
-    await ensureFile(dir + '/public/index.html');
+    await fs.ensureDir(dir);
+    await fs.ensureDir(dir + '/public');
+    await fs.ensureFile(dir + '/public/index.html');
     await build(dir + '/**', { silent: true });
     expect(warnSpy).not.toHaveBeenCalled();
     expect(logSpy).not.toHaveBeenCalled();
@@ -212,10 +215,10 @@ describe('Clean', () => {
   it('remove dot files', async () => {
     const dir = '__tests__/dist';
     const dotFile = dir + '/.gitignore';
-    await ensureDir(dir);
-    await ensureFile(dotFile);
+    await fs.ensureDir(dir);
+    await fs.ensureFile(dotFile);
     await build(dir + '/*');
-    const exists = await pathExists(dotFile);
+    const exists = await fs.pathExists(dotFile);
     expect(exists).toBeFalsy();
     expect(warnSpy).not.toHaveBeenCalled();
     expect(logSpy).not.toHaveBeenCalled();
@@ -225,10 +228,10 @@ describe('Clean', () => {
   it('does not remove dot files', async () => {
     const dir = '__tests__/dist';
     const dotFile = dir + '/.gitignore';
-    await ensureDir(dir);
-    await ensureFile(dotFile);
+    await fs.ensureDir(dir);
+    await fs.ensureFile(dotFile);
     await build(dir + '/*', { dot: false });
-    const exists = await pathExists(dotFile);
+    const exists = await fs.pathExists(dotFile);
     expect(exists).toBeTruthy();
     expect(warnSpy).not.toHaveBeenCalled();
     expect(logSpy).not.toHaveBeenCalled();

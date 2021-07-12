@@ -2,17 +2,17 @@
   "name": "@open-tech-world/rollup-plugin-clean",
   "version": "0.7.1",
   "description": "A rollup plugin to remove files and folders.",
-  "main": "dist/plugin.cjs.js",
-  "module": "dist/plugin.es.js",
-  "types": "dist/plugin.d.ts",
+  "type": "module",
+  "exports": {
+    ".": "./dist/plugin.esm.js"
+  },
+  "types": "./dist/types/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "test": "jest",
-    "build:ts": "tsc",
-    "build:rollup": "rollup -c",
-    "build": "yarn build:ts && yarn build:rollup"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "build": "rm -rf dist && rollup -c"
   },
   "repository": {
     "type": "git",
@@ -37,9 +37,8 @@
   },
   "homepage": "https://github.com/open-tech-world/rollup-plugin-clean#readme",
   "devDependencies": {
-    "@babel/core": "^7.14.3",
-    "@babel/preset-env": "^7.14.4",
-    "@babel/preset-typescript": "^7.13.0",
+    "@rollup/plugin-typescript": "^8.2.1",
+    "@types/jest": "^26.0.24",
     "@types/lodash.merge": "^4.6.6",
     "@types/node": "^15.12.1",
     "@typescript-eslint/eslint-plugin": "latest",
@@ -52,7 +51,6 @@
     "jest": "^27.0.4",
     "prettier": "^2.3.1",
     "rollup": "^2.50.6",
-    "rollup-plugin-dts": "^3.0.2",
     "typescript": "^4.3.2"
   },
   "dependencies": {

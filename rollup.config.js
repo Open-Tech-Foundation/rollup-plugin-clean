@@ -1,28 +1,13 @@
-import dts from 'rollup-plugin-dts';
+import typescript from '@rollup/plugin-typescript';
 
 export default [
   {
-    input: 'built/index.js',
-    output: [
-      {
-        file: 'dist/plugin.cjs.js',
-        format: 'cjs',
+    input: 'src/index.ts',
+    output: {
+        file: 'dist/plugin.esm.js',
+        format: 'esm',
       },
-      {
-        file: 'dist/plugin.es.js',
-        format: 'es',
-      },
-    ],
     external: ['del', 'path', 'globby', 'fs'],
-  },
-  {
-    input: 'built/index.d.ts',
-    output: [
-      {
-        file: 'dist/plugin.d.ts',
-        format: 'es',
-      },
-    ],
-    plugins: [dts()],
+    plugins: [typescript({ tsconfig: './tsconfig.json' })],
   },
 ];
