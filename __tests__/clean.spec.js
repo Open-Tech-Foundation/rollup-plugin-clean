@@ -1,9 +1,7 @@
-import { rollup } from 'rollup';
-// import { fs.ensureFile, fs.ensureDir, pathExists } from 'fs-extra';
-import { default as fs } from 'fs-extra';
-import { jest } from '@jest/globals';
+const { rollup } = require('rollup');
+const { ensureFile, ensureDir, pathExists } = require('fs-extra');
 
-import clean from '../dist/plugin.esm.js';
+const clean = require('../dist/plugin.cjs.js');
 
 async function build(target, options) {
   await rollup({
