@@ -83,7 +83,7 @@ async function dryRun(
     warn.call(this, 'No paths matched!', options);
     return;
   }
-  log.call(this, '\nThe follwoing relative paths can be cleaned:', options);
+  log.call(this, '\nThe following relative paths can be cleaned:', options);
   dryPaths.forEach((path, index) =>
     log.call(this, `${index + 1}. ${removeCWDFromPath(path)}`, options)
   );
