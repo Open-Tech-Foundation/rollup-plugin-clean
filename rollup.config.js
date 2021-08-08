@@ -4,11 +4,10 @@ export default [
   {
     input: 'src/index.ts',
     output: {
-      file: 'dist/plugin.cjs.js',
-      format: 'cjs',
-      exports: 'auto',
+      dir: 'dist',
+      format: 'esm',
     },
-    external: ['del', 'path', 'globby', 'fs'],
+    external: ['path', 'fs'],
     plugins: [typescript({ tsconfig: './tsconfig.json' })],
   },
 ];

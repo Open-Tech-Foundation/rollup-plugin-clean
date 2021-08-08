@@ -1,5 +1,5 @@
 export interface IOptions {
-  dryRun: boolean;
-  silent: boolean;
+  dry: boolean;
   dot: boolean;
+  hook: string;
 }
