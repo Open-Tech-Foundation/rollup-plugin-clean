@@ -1,11 +1,14 @@
 {
   "name": "@open-tech-world/rollup-plugin-clean",
   "version": "0.12.0",
-  "description": "A rollup plugin to remove files and folders.",
-  "main": "./dist/plugin.cjs.js",
-  "module": "./dist/plugin.esm.js",
-  "types": "./dist/types/index.d.ts",
+  "description": "A rollup plugin to remove files and folders using glob patterns.",
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.esm.js",
+  "types": "./dist/index.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/index.esm.js"
+  },
   "files": [
     "dist"
   ],
