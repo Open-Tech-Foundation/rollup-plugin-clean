@@ -35,6 +35,7 @@ function setup() {
     'build/public/robots.txt',
     'build/app.js',
     'build/vendors.js',
+    'dist/package.json',
   ];
 
   if (existsSync(tempDir)) {

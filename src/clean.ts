@@ -14,12 +14,9 @@ export default function clean(
   };
   const currentOptions = Object.assign({}, defaultOptions, options);
 
-  console.log('Patterns', patterns);
-
   return {
     name: '@open-tech-world/rollup-plugin-clean',
     [currentOptions.hook]: async () => {
-      console.log('From hook: ', currentOptions.hook);
       rmSync(patterns, {
         cwd: process.cwd(),
         dot: currentOptions.dot,
