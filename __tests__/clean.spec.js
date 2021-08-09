@@ -16,6 +16,7 @@ beforeEach(() => {
   const cwdSpy = jest.spyOn(process, 'cwd');
   cwdSpy.mockImplementation(() => tempDir);
   consoleLogSpy = jest.spyOn(console, 'log');
+  consoleLogSpy.mockImplementation(() => undefined);
 });
 
 describe('Clean Plugin', () => {
@@ -31,7 +32,7 @@ describe('Clean Plugin', () => {
   it('cleans build dir', async () => {
     await rollup({
       input: Path.join(tempDir, 'src', 'index.js'),
-      plugins: [clean('build/*', { dry: false })],
+      plugins: [clean('build/*')],
     });
     expect(globSync('build/*', { cwd: tempDir })).toHaveLength(0);
     expect(consoleLogSpy).not.toHaveBeenCalled();
@@ -40,15 +41,33 @@ describe('Clean Plugin', () => {
   test('multiple patterns', async () => {
     await rollup({
       input: Path.join(tempDir, 'src', 'index.js'),
-      plugins: [clean(['build/*', 'dist'], { dry: false })],
+      plugins: [clean(['build/*', 'dist'])],
     });
     expect(globSync('build/*', { cwd: tempDir })).toHaveLength(0);
+  });
+
+  it('cleans build dir with glob star', async () => {
+    await rollup({
+      input: Path.join(tempDir, 'src', 'index.js'),
+      plugins: [clean('build/**')],
+    });
+    expect(globSync('build/**', { cwd: tempDir })).toHaveLength(0);
+    expect(consoleLogSpy).not.toHaveBeenCalled();
+  });
+
+  it('cleans build dir with glob star & negation', async () => {
+    await rollup({
+      input: Path.join(tempDir, 'src', 'index.js'),
+      plugins: [clean(['build/**', '!**/assets/logo.svg'])],
+    });
+    expect(globSync(['build/**'], { cwd: tempDir })).toHaveLength(3);
+    expect(consoleLogSpy).not.toHaveBeenCalled();
   });
 
   test('custom hook', async () => {
     await rollup({
       input: Path.join(tempDir, 'src', 'index.js'),
-      plugins: [clean('build/*', { hook: 'buildEnd', dry: false })],
+      plugins: [clean('build/*', { hook: 'buildEnd' })],
     });
     expect(globSync('build/*', { cwd: tempDir })).toHaveLength(0);
   });
@@ -56,7 +75,7 @@ describe('Clean Plugin', () => {
   it('does not removes dot files', async () => {
     await rollup({
       input: Path.join(tempDir, 'src', 'index.js'),
-      plugins: [clean(['*', '!src'], { dry: false, dot: false })],
+      plugins: [clean(['*', '!src'], { dot: false })],
     });
     expect(globSync('*', { cwd: tempDir, dot: true })).toHaveLength(3);
   });
