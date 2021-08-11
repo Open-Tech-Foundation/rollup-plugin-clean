@@ -4,7 +4,7 @@ import { rollup } from 'rollup';
 import { globSync } from '@open-tech-world/node-glob';
 import { jest } from '@jest/globals';
 
-import { clean } from '../dist/index.esm';
+import { clean } from '../dist/index.esm.js';
 
 import setup from './setup';
 
